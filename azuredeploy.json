@@ -48,20 +48,47 @@
         "principalId": "b82b6153-1611-4d0c-bbdb-006363854565",
         "roleDefinitionId": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635"
       }
-    ]
+    ],
+    "deploymentApi": "2018-02-01"
   },
-  "resources": [
-    {
-      "apiVersion": "2017-09-01",
-      "name": "[parameters('name')]",
-      "location": "[parameters('location')]",
-      "type": "Microsoft.Solutions/applicationDefinitions",
+  "resources": [    {
+      "apiVersion": "[variables('deploymentApi')]",
+      "name": "pid-a6eb1592-4217-5ddd-aa58-683a38abd54d",
+      "type": "Microsoft.Resources/deployments",
       "properties": {
-        "lockLevel": "[parameters('lockLevel')]",
-        "authorizations": "[array(variables('authorizations'))]",
-        "description": "[parameters('description')]",
-        "displayName": "[parameters('displayName')]",
-        "packageFileUri": "[variables('packageFileUri')]"
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": []
+        }
+      }
+    },
+    {
+      "apiVersion": "[variables('deploymentApi')]",
+      "name": "DefinitionInstall",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": [
+            {
+              "apiVersion": "2017-09-01",
+              "name": "[parameters('name')]",
+              "location": "[parameters('location')]",
+              "type": "Microsoft.Solutions/applicationDefinitions",
+              "properties": {
+                "lockLevel": "[parameters('lockLevel')]",
+                "authorizations": "[array(variables('authorizations'))]",
+                "description": "[parameters('description')]",
+                "displayName": "[parameters('displayName')]",
+                "packageFileUri": "[variables('packageFileUri')]"
+              }
+            }
+          ]
+        }
       }
     }
   ],
